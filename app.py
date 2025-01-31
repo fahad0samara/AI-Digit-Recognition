@@ -14,6 +14,7 @@ import json
 import cv2
 from scipy import ndimage
 import random
+import os
 
 # Set page config with a modern title and icon
 st.set_page_config(
@@ -279,9 +280,16 @@ st.markdown("""
 def load_model():
     """Load the trained model and scaler"""
     try:
+        # Get the directory containing the script
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Construct absolute paths to model files
+        model_path = os.path.join(script_dir, 'models', 'digit_classifier_ensemble.joblib')
+        scaler_path = os.path.join(script_dir, 'models', 'scaler.joblib')
+        
         # Load ensemble model
-        model = joblib.load('models/digit_classifier_ensemble.joblib')
-        scaler = joblib.load('models/scaler.joblib')
+        model = joblib.load(model_path)
+        scaler = joblib.load(scaler_path)
         
         # Verify model is loaded correctly
         if model is None or not hasattr(model, 'predict'):
